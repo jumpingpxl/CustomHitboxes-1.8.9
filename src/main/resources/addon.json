@@ -1,0 +1,10 @@
+{
+  "uuid": "%uuid%",
+  "author": "JumpingPxl",
+  "name": "CustomHitboxes",
+  "mainClass": "de.jumpingpxl.labymod.customhitboxes.CustomHitboxes",
+  "description": "This add-on allows you to permanently display and change the color for all kinds of hitboxes.",
+  "version": 3,
+  "category": 4,
+  "icon": "https://nicomiddendorf.de/jumpingaddon/CustomHitboxIcon.png"
+}
