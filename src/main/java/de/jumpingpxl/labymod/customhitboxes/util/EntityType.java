@@ -1,15 +1,14 @@
 package de.jumpingpxl.labymod.customhitboxes.util;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAmbientCreature;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityWaterMob;
+import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.EntityFishHook;
 
 public enum EntityType {
 	UNKNOWN,
@@ -24,20 +23,20 @@ public enum EntityType {
 			return PLAYER;
 		}
 
-		if (entity instanceof EntityAnimal || entity instanceof EntityAmbientCreature
-				|| entity instanceof EntityWaterMob || entity instanceof EntityVillager) {
-			return ANIMAL;
+		if (entity instanceof IMob) {
+			return MOB;
 		}
 
-		if (entity instanceof EntityMob) {
-			return MOB;
+		if (entity instanceof IAnimals) {
+			return ANIMAL;
 		}
 
 		if (entity instanceof EntityItem || entity instanceof EntityExpBottle) {
 			return DROP;
 		}
 
-		if (entity instanceof EntityThrowable) {
+		if (entity instanceof EntityFireball || entity instanceof IProjectile
+				|| entity instanceof EntityFishHook) {
 			return THROWABLE;
 		}
 
