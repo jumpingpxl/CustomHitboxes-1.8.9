@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +32,7 @@ public enum EntityType {
 			return ANIMAL;
 		}
 
-		if (entity instanceof EntityItem || entity instanceof EntityExpBottle) {
+		if (entity instanceof EntityItem || entity instanceof EntityXPOrb) {
 			return DROP;
 		}
 
