@@ -121,7 +121,6 @@ public class ColorPickerGui extends GuiScreen {
 			GuiTextField textField = colorSelector.getTextField();
 			if (Objects.nonNull(textField)) {
 				colorSelector.initTextField();
-				//addListener(textField);
 			}
 		}
 	}

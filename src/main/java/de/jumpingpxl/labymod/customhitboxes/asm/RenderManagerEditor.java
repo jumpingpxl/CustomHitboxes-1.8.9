@@ -23,6 +23,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -30,7 +31,7 @@ import java.util.Objects;
 
 public class RenderManagerEditor extends ClassEditor {
 
-	public static final String RENDER_MANAGER_CLASS = (LabyModCoreMod.isObfuscated() ? "biu"
+	private static final String RENDER_MANAGER_CLASS = (LabyModCoreMod.isObfuscated() ? "biu"
 			: "net/minecraft/client/renderer/entity/RenderManager");
 	private static final String RENDER_MANAGER_EDITOR_CLASS =
 			"de/jumpingpxl/labymod/customhitboxes" + "/asm/RenderManagerEditor";
@@ -155,28 +156,29 @@ public class RenderManagerEditor extends ClassEditor {
 		for (MethodNode method : node.methods) {
 			if (method.name.equals(DO_RENDER_ENTITY_METHOD) && method.desc.startsWith(
 					"(L" + ENTITY_CLASS + ";DDDFFZ)")) {
-				for (int i = 0; i < method.instructions.size(); i++) {
-					AbstractInsnNode abstractInsnNode = method.instructions.get(i);
-					if (abstractInsnNode.getOpcode() == Opcodes.GETFIELD) {
-						FieldInsnNode field = (FieldInsnNode) abstractInsnNode;
-						if (field.owner.equals(RENDER_MANAGER_CLASS) && field.name.equals(
-								DEBUG_BOUNDING_BOX_FIELD) && field.desc.equals("Z")) {
-							method.instructions.insert(abstractInsnNode,
+				InsnList instructions = method.instructions;
+				for (int i = 0; i < instructions.size(); i++) {
+					AbstractInsnNode abstractNode = instructions.get(i);
+					if (abstractNode.getOpcode() == Opcodes.GETFIELD) {
+						FieldInsnNode fieldNode = (FieldInsnNode) abstractNode;
+						if (fieldNode.owner.equals(RENDER_MANAGER_CLASS) && fieldNode.name.equals(
+								DEBUG_BOUNDING_BOX_FIELD) && fieldNode.desc.equals("Z")) {
+							instructions.insert(abstractNode,
 									new MethodInsnNode(Opcodes.INVOKESTATIC, RENDER_MANAGER_EDITOR_CLASS,
 											"debugBoundingBox", "()Z", false));
-							method.instructions.remove(abstractInsnNode.getPrevious());
-							method.instructions.remove(abstractInsnNode);
+							instructions.remove(abstractNode.getPrevious());
+							instructions.remove(abstractNode);
 						}
-					} else if (abstractInsnNode.getOpcode() == Opcodes.INVOKESPECIAL) {
-						MethodInsnNode methodNode = (MethodInsnNode) abstractInsnNode;
+					} else if (abstractNode.getOpcode() == Opcodes.INVOKESPECIAL) {
+						MethodInsnNode methodNode = (MethodInsnNode) abstractNode;
 						if (methodNode.owner.equals(RENDER_MANAGER_CLASS) && methodNode.name.equals(
 								RENDER_DEBUG_BOUNDING_BOX_METHOD) && methodNode.desc.equals(
 								"(L" + ENTITY_CLASS + ";DDDFF)V")) {
-							method.instructions.insert(abstractInsnNode,
+							instructions.insert(abstractNode,
 									new MethodInsnNode(Opcodes.INVOKESTATIC, RENDER_MANAGER_EDITOR_CLASS,
 											"renderDebugBoundingBox", "(L" + ENTITY_CLASS + ";DDDFF)V", false));
-							method.instructions.remove(method.instructions.get(i - 7));
-							method.instructions.remove(abstractInsnNode);
+							instructions.remove(instructions.get(i - 7));
+							instructions.remove(abstractNode);
 						}
 					}
 				}
@@ -184,7 +186,5 @@ public class RenderManagerEditor extends ClassEditor {
 				break;
 			}
 		}
-
-		super.accept(name, node);
 	}
 }
