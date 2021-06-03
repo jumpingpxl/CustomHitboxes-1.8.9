@@ -58,7 +58,7 @@ public class RenderManagerEditor extends ClassEditor {
 
 	public static void renderDebugBoundingBox(RenderManager renderManager, Entity entity, double x,
 	                                          double y, double z, float entityYaw,
-	                                          float partialTicks) { //TODO: Fix Transparency Bug
+	                                          float partialTicks) {
 		Color color = getColor(settings, entity);
 		if (Objects.isNull(color)) {
 			if (renderManager.isDebugBoundingBox()) {

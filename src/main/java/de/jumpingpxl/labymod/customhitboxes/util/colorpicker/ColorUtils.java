@@ -53,6 +53,7 @@ public class ColorUtils {
 	                                      int y,
 	                                      double width, double height) {
 		GlStateManager.enableTexture2D();
+
 		Minecraft.getMinecraft().getTextureManager().bindTexture(TRANSPARENT_BACKGROUND);
 		buffer.reset();
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
