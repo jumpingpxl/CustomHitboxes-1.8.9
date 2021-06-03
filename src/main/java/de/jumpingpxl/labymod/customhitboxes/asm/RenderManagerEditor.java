@@ -58,7 +58,7 @@ public class RenderManagerEditor extends ClassEditor {
 
 	public static void renderDebugBoundingBox(RenderManager renderManager, Entity entity, double x,
 	                                          double y, double z, float entityYaw,
-	                                          float partialTicks) {
+	                                          float partialTicks) { //TODO: Fix Transparency Bug
 		Color color = getColor(settings, entity);
 		if (Objects.isNull(color)) {
 			if (renderManager.isDebugBoundingBox()) {
@@ -73,6 +73,7 @@ public class RenderManagerEditor extends ClassEditor {
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.enableBlend();
+
 		AxisAlignedBB entityBoundingBox = entity.getEntityBoundingBox();
 		AxisAlignedBB axisAlignedBB = new AxisAlignedBB(entityBoundingBox.minX - entity.posX + x,
 				entityBoundingBox.minY - entity.posY + y, entityBoundingBox.minZ - entity.posZ + z,
