@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -45,22 +46,22 @@ public class RenderManagerEditor extends ClassEditor {
 			.getRenderDebugBoundingBoxName();
 	private static final String DEBUG_BOUNDING_BOX_FIELD = (LabyModCoreMod.isObfuscated() ? "t"
 			: "debugBoundingBox");
+	private static Settings settings;
 
 	public RenderManagerEditor() {
 		super(ClassEditor.ClassEditorType.CLASS_VISITOR);
 	}
 
-	public static boolean debugBoundingBox() {
-		return Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox()
-				|| CustomHitboxes.getSettings().isEnabled();
+	public static boolean debugBoundingBox(RenderManager renderManager) {
+		return renderManager.isDebugBoundingBox() || isEnabled();
 	}
 
-	public static void renderDebugBoundingBox(Entity entity, double x, double y, double z,
-	                                          float entityYaw, float partialTicks) {
-		Settings settings = CustomHitboxes.getSettings();
+	public static void renderDebugBoundingBox(RenderManager renderManager, Entity entity, double x,
+	                                          double y, double z, float entityYaw,
+	                                          float partialTicks) {
 		Color color = getColor(settings, entity);
 		if (Objects.isNull(color)) {
-			if (Minecraft.getMinecraft().getRenderManager().isDebugBoundingBox()) {
+			if (renderManager.isDebugBoundingBox()) {
 				color = settings.getColor();
 			} else {
 				return;
@@ -151,6 +152,14 @@ public class RenderManagerEditor extends ClassEditor {
 		return color;
 	}
 
+	private static boolean isEnabled() {
+		if (Objects.isNull(settings)) {
+			settings = CustomHitboxes.getSettings();
+		}
+
+		return settings.isEnabled();
+	}
+
 	@Override
 	public void accept(String name, ClassNode node) {
 		for (MethodNode method : node.methods) {
@@ -165,8 +174,7 @@ public class RenderManagerEditor extends ClassEditor {
 								DEBUG_BOUNDING_BOX_FIELD) && fieldNode.desc.equals("Z")) {
 							instructions.insert(abstractNode,
 									new MethodInsnNode(Opcodes.INVOKESTATIC, RENDER_MANAGER_EDITOR_CLASS,
-											"debugBoundingBox", "()Z", false));
-							instructions.remove(abstractNode.getPrevious());
+											"debugBoundingBox", "(L" + RENDER_MANAGER_CLASS + ";)Z", false));
 							instructions.remove(abstractNode);
 						}
 					} else if (abstractNode.getOpcode() == Opcodes.INVOKESPECIAL) {
@@ -176,8 +184,8 @@ public class RenderManagerEditor extends ClassEditor {
 								"(L" + ENTITY_CLASS + ";DDDFF)V")) {
 							instructions.insert(abstractNode,
 									new MethodInsnNode(Opcodes.INVOKESTATIC, RENDER_MANAGER_EDITOR_CLASS,
-											"renderDebugBoundingBox", "(L" + ENTITY_CLASS + ";DDDFF)V", false));
-							instructions.remove(instructions.get(i - 7));
+											"renderDebugBoundingBox",
+											"(L" + RENDER_MANAGER_CLASS + ";L" + ENTITY_CLASS + ";DDDFF)V", false));
 							instructions.remove(abstractNode);
 						}
 					}
