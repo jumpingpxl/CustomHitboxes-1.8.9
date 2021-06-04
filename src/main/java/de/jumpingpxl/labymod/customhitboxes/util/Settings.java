@@ -10,14 +10,10 @@ import de.jumpingpxl.labymod.customhitboxes.util.dynamicelements.Icon;
 import net.labymod.settings.elements.HeaderElement;
 import net.labymod.settings.elements.SettingsElement;
 import net.labymod.utils.Material;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
 public class Settings {
-
-	private static final ResourceLocation DYE_LIME = new ResourceLocation(
-			"textures" + "/items/dye_powder_lime.png");
 
 	private final CustomHitboxes customHitboxes;
 
