@@ -2,7 +2,6 @@ package de.jumpingpxl.labymod.customhitboxes.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
