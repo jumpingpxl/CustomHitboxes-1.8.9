@@ -212,25 +212,27 @@ public class Settings {
 									saveConfig();
 								})));
 
-		settingsElements.add(
-				DynamicSettingsElement.create("§6Throwables", Icon.of(Material.POTION, 16385))
-						.addSubSettings(DynamicBooleanElement.create("§6Enable Throwable Hitbox",
-								Icon.of(Material.POTION, 16385), throwablesEnabled, newValue -> {
-									throwablesEnabled = newValue;
-									getConfig().addProperty("throwablesEnabled", newValue);
+		settingsElements.add(DynamicSettingsElement.create("§6Throwables",
+				Icon.of("customhitboxes/textures/throwable_category.png"))
+				.addSubSettings(DynamicBooleanElement.create("§6Enable Throwable Hitbox",
+						Icon.of("customhitboxes/textures/throwable_category.png"), throwablesEnabled,
+						newValue -> {
+							throwablesEnabled = newValue;
+							getConfig().addProperty("throwablesEnabled", newValue);
+							saveConfig();
+						}), DynamicHeaderElement.create(10, ""),
+						DynamicBooleanElement.create("§6Custom Color", Icon.of(Material.LEVER),
+								ownColorThrowables, newValue -> {
+									ownColorThrowables = newValue;
+									getConfig().addProperty("ownColorThrowables", newValue);
 									saveConfig();
-								}), DynamicHeaderElement.create(10, ""),
-								DynamicBooleanElement.create("§6Custom Color", Icon.of(Material.LEVER),
-										ownColorThrowables, newValue -> {
-											ownColorThrowables = newValue;
-											getConfig().addProperty("ownColorThrowables", newValue);
-											saveConfig();
-										}), ColorPickerElement.create("§6Custom Throwable Color",
-										Icon.of(Material.INK_SACK, 10), getThrowableColor(), newColor -> {
-											throwableColor = Color.fromRgb(newColor);
-											getConfig().addProperty("throwableColor", newColor);
-											saveConfig();
-										})));
+								}),
+						ColorPickerElement.create("§6Custom Throwable Color", Icon.of(Material.INK_SACK, 10),
+								getThrowableColor(), newColor -> {
+									throwableColor = Color.fromRgb(newColor);
+									getConfig().addProperty("throwableColor", newColor);
+									saveConfig();
+								})));
 		settingsElements.add(DynamicHeaderElement.create(15, "", "§4§lIMPORTANT",
 				"§cOnly a selection of entities is supported for\n§ccolored & permanent hitboxes.",
 				"§cTo view colored hitboxes of all entities (for example\n§cArmorStands & MineCarts), "
